@@ -3,7 +3,7 @@
 global debounceTime := 170  ; 170ms debounce time
 global lastReleaseTime := 0
 
-XButton1::
+*XButton1::
 {
     global debounceTime, lastReleaseTime
 
