@@ -1,23 +1,21 @@
 #Requires AutoHotkey v2.0
 
-; When u is sent du is sent again. We need to put a very small delay on d again
+global debounceTime := 170  ; 170ms debounce time
+global lastReleaseTime := 0
 
-Sleeping := false
-
-*XButton1::
+XButton1::
 {
-    global Sleeping
-    if (!Sleeping)
-        Send "{XButton1 Down}"
-    Else
-        Sleeping := false ; In Case Sleeping Fails, we stopped a single retrigger
-}
+    global debounceTime, lastReleaseTime
 
-*XButton1 Up::
-{
-    global Sleeping
-    Send "{XButton1 Up}"
-    Sleeping := true
-    Sleep 100
-    Sleeping := false
+    if (A_TickCount - lastReleaseTime < debounceTime) {
+        return
+    }
+
+    Send("{XButton1 down}")
+
+    KeyWait("XButton1")  ; Wait for button to be released
+
+    Send("{XButton1 up}")
+
+    lastReleaseTime := A_TickCount  ; Save the release time
 }
